@@ -1,0 +1,18 @@
+{% extends 'main_base.html' %}
+{% load i18n %}
+
+{% block body %}
+   <div class="container pt-5">
+        <div class="row mb-2">
+            {% for shop in shops_list %}
+                <div class="col-md-6 mb-5">
+                    <a class="a-hidden" href="{% url 'shop page' shop.id %}">
+                        <div class="card p-3 text-center card-hover">
+                            <h1>{{ shop.name }}</h1>
+                        </div>
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

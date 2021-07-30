@@ -1,0 +1,174 @@
+{% extends 'main_base.html' %}
+{% load i18n %}
+
+{% block body %}
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+
+    <div id="reportrange" class="mx-auto mt-4 text-center" style="background: #FBF7F7; padding-bottom: 0.3rem; padding-top: 0.3rem; cursor: pointer; width: 13rem; border-radius: 1rem;">
+        <i class="fa fa-calendar white"></i>
+        <span></span> <i class="fa fa-caret-down"></i>
+    </div>
+    <div class="w-100 mt-4" align="center">
+        <div id="pages_btns" class="btn-group btn-group-sm">
+        </div>
+    </div>
+    <div class="container mt-4-5">
+        <div id="goods_row" class="row mb-2">
+
+        </div>
+    </div>
+    <script type="text/javascript">
+        var num_this_page
+        var num_goods
+        var date_start
+        var date_end
+        $(function() {
+
+            var start = moment().subtract(29, 'days');
+            var end = moment();
+
+            function cb(start, end) {
+                $('#reportrange span').html(start.format('{{ date_format }}') + ' - ' + end.format('{{ date_format }}'))
+                {# Запись Начальной и Конечной даты в глобальные переменные #}
+                {# в нужном фомате для фильтрации модели Goods #}
+                date_start = start.format('YYYY-MM-DD')
+                date_end = end.format('YYYY-MM-DD')
+                {# Отправка пост запроса в DRF с последующим рендером товаров #}
+                post_goods_json()
+            }
+
+            $('#reportrange').daterangepicker({
+                startDate: start,
+                endDate: end,
+                ranges: {
+                    "{% trans 'Today' %}" : [moment(), moment()],
+                    "{% trans 'Yesterday' %}" : [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                    "{% trans 'Last 7 Days' %}" : [moment().subtract(6, 'days'), moment()],
+                    "{% trans 'Last 30 Days' %}" : [moment().subtract(29, 'days'), moment()],
+                    "{% trans 'This Month' %}" : [moment().startOf('month'), moment().endOf('month')],
+                },
+                "locale": {
+                    "format": "{{ date_format }}",
+                    "separator": " - ",
+                    "applyLabel": "{% trans 'Apply' %}",
+                    "cancelLabel": "{% trans 'Cancel' %}",
+                    "fromLabel": "{% trans 'From' %}",
+                    "toLabel": "{% trans 'To' %}",
+                    "customRangeLabel": "{% trans 'Custom' %}",
+                    "daysOfWeek": [
+                        "{% trans 'Su' %}",
+                        "{% trans 'Mo' %}",
+                        "{% trans 'Tu' %}",
+                        "{% trans 'We' %}",
+                        "{% trans 'Th' %}",
+                        "{% trans 'Fr' %}",
+                        "{% trans 'Sa' %}"
+                        ],
+                    "monthNames": [
+                        "{% trans 'January' %}",
+                        "{% trans 'February' %}",
+                        "{% trans 'March' %}",
+                        "{% trans 'April' %}",
+                        "{% trans 'May' %}",
+                        "{% trans 'June' %}",
+                        "{% trans 'July' %}",
+                        "{% trans 'August' %}",
+                        "{% trans 'September' %}",
+                        "{% trans 'October' %}",
+                        "{% trans 'November' %}",
+                        "{% trans 'December' %}"
+                        ],
+                    "firstDay": 1
+                    }
+            }, cb)
+
+            num_this_page = 1
+
+            cb(start, end)
+
+        })
+
+        function post_goods_json (){
+            $.ajax({
+                    url : "{% url 'api top bought goods' %}"+'?date_start='+date_start+'&date_end='+date_end+'&page='+num_this_page,
+                    dataType: "json",
+                    success : function (data) {
+                        num_goods = data.count
+                        render_button_list(num_goods)
+                        render_success_goods_list(data.results)
+                    }
+                })
+        }
+
+        function render_button_list (num_goods){
+            $('#pages_btns').empty()
+            var num_pages = Math.ceil(num_goods/6)
+            for (var counter_num = 1; counter_num <= num_pages; counter_num++){
+                var button = '<button type="button" onclick="change_page(' + counter_num + ')" class="btn btn-outline-secondary'
+                if (counter_num === num_this_page){
+                    button += 'active" style="background-color: #6E6D68; color: white;'
+                }
+                button += '">' + counter_num + '</button>'
+                $('#pages_btns').append(button)
+            }
+        }
+
+        function change_page(num_page){
+            num_this_page=num_page
+            post_goods_json()
+        }
+
+        function render_success_goods_list (top_goods) {
+            $('#goods_row').empty()
+            $.each(top_goods, function (key, item){
+                var goods =
+                    '<div class="col-md-6 mb-5">'
+                    if (item.amount_in_stock > 0){
+                goods +=     '<div class="card card-hover mb-3" style="height: 43rem">'
+                                +'<a href="/shops/good-' + item.goods_id + '" class="a-hidden">'
+                    } else {
+                goods +=
+                            '<div class="card mb-3" style="height: 43rem; opacity: 0.6">'
+                    }
+                goods +=
+                                '<div class="bg-img" style="background-image: url(' + item.goods_img + '); height: 32rem;"></div>'
+                                +'<div class="card-body">'
+                                    +'<div class="row">'
+                                    +'<div class="col">'
+                                        +'<h5 class="card-title">' + item.goods_name + '</h5>'
+                                        +'<figcaption class="blockquote-footer mb-2 text-muted">'
+                                            +'<cite title="Source Title">' + item.shop_name + '</cite>'
+                                        +'</figcaption>'
+                    if (item.goods_price !== item.goods_price_with_discount){
+                goods +=
+                                            '<div class="d-inline-block align-middle">'
+                                                +'<s style="color: #b10101">'
+                                                    +'<h4 style="color: #5a5a5a; margin-right: 1rem;">' + item.goods_price + '</h4>'
+                                                +'</s>'
+                                            +'</div>'
+                    }
+                    if (item.amount_in_stock > 0){
+                goods +=
+                                            '<button class="btn btn-outline-danger d-inline">{% trans "ADD TO CART" %}</button>'
+                    }
+                goods +=
+                                    '</div>'
+                                        +'<div class="col">'
+                                            +'<h1 class="text-md-center" style="font-size: 3rem">' + item.goods_price_with_discount + ' $</h1>'
+                                        +'</div>'
+                                    +'</div>'
+                                +'</div>'
+                    if (item.amount_in_stock > 0){
+                goods +=
+                                '</a>'
+                    }
+                goods +=
+                        '</div>'
+                    +'</div>'
+                $('#goods_row').append(goods)
+            })
+        }
+    </script>
+{% endblock %}

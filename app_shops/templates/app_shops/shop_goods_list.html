@@ -1,0 +1,47 @@
+{% extends 'main_base.html' %}
+{% load i18n %}
+
+{% block body %}
+     <div class="container pt-5">
+        <div class="row mb-2">
+        {% for goods in goods_list %}
+            <div class="col-md-6 mb-5">
+                {% if goods.amount > 0 %}
+                    <div class="card card-hover mb-3" style="height: 43rem">
+                        <a href="{% url 'add goods in cart' goods.id %}" class="a-hidden">
+                {% else %}
+                    <div class="card mb-3" style="height: 43rem; opacity: 0.6">
+                {% endif %}
+                        <div class="bg-img" style="background-image: url({{ goods.img.url }}); height: 32rem;"></div>
+                        <div class="card-body">
+                            <div class="row">
+                            <div class="col">
+                                <h5 class="card-title">{{ goods.name }}</h5>
+                                <figcaption class="blockquote-footer mb-2 text-muted">
+                                    <cite title="Source Title">{{ goods.shop.name }}</cite>
+                                </figcaption>
+                                {% if goods.float_price != goods.price_with_discount %}
+                                    <div class="d-inline-block align-middle">
+                                        <s style="color: #b10101">
+                                            <h4 style="color: #5a5a5a; margin-right: 1rem;">{{ goods.float_price }}</h4>
+                                        </s>
+                                    </div>
+                                {% endif %}
+                                {% if goods.amount > 0 %}
+                                    <button class="btn btn-outline-danger d-inline">{% trans "ADD TO CART" %}</button>
+                                {% endif %}
+                            </div>
+                                <div class="col">
+                                    <h1 class="text-md-center" style="font-size: 3rem">{{ goods.price_with_discount }} $</h1>
+                                </div>
+                            </div>
+                        </div>
+                    {% if goods.amount > 0 %}
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+        {% endfor %}
+        </div>
+    </div>
+{% endblock %}

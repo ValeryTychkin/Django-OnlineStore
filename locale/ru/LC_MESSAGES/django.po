@@ -1,0 +1,412 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-07-28 17:54+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n"
+"%100>=11 && n%100<=14)? 2 : 3);\n"
+
+#: app_home/templates/app_home/home_page.html:25
+#: app_home/templates/app_home/home_page.html:60
+#: app_shops/templates/app_shops/shop_goods_list.html:31
+#: app_shops/templates/app_shops/top_bought_goods.html:151
+msgid "ADD TO CART"
+msgstr "ДОБАВИТЬ В КОРЗИНУ"
+
+#: app_home/templates/app_home/home_page.html:77
+#: app_home/templates/app_home/home_page.html:89
+#: app_home/templates/app_home/home_page.html:119
+#: app_home/templates/app_home/home_page.html:131
+#: app_home/templates/app_home/home_page.html:168
+#: app_home/templates/app_home/home_page.html:180
+#: app_users/templates/app_users/user_page.html:182
+msgid "You have a discount:"
+msgstr "У вас есть скидка:"
+
+#: app_home/templates/app_home/home_page.html:106
+#: app_home/templates/app_home/home_page.html:148
+#: app_home/templates/app_home/home_page.html:197
+#: app_users/templates/app_users/user_page.html:198
+msgid "You have a discount"
+msgstr "У вас есть скидка"
+
+#: app_home/templates/main_base.html:24 app_home/views.py:37
+msgid "Home"
+msgstr "Главная"
+
+#: app_home/templates/main_base.html:27 app_shops/views.py:53
+msgid "Shops"
+msgstr "Бренды"
+
+#: app_home/templates/main_base.html:30 app_shops/views.py:29
+msgid "Top bought goods"
+msgstr "Топ продаваемых товаров"
+
+#: app_home/templates/main_base.html:37 app_home/templates/main_base.html:46
+msgid "LogIn"
+msgstr "Войти"
+
+#: app_home/templates/main_base.html:49
+#: app_users/templates/app_users/sign_up.html:31 app_users/views.py:130
+#: app_users/views.py:149
+msgid "SignUp"
+msgstr "Зарегистрироваться"
+
+#: app_home/templates/main_base.html:59 app_users/views.py:60
+msgid "Cart"
+msgstr "Корзина"
+
+#: app_home/templates/main_base.html:68
+msgid "Account Page"
+msgstr "Ваша Страница"
+
+#: app_home/templates/main_base.html:70
+#: app_users/templates/app_users/change_about.html:22
+#: app_users/templates/app_users/sign_up.html:29
+msgid "About"
+msgstr "О Вас"
+
+#: app_home/templates/main_base.html:71 app_users/views.py:118
+msgid "History"
+msgstr "История"
+
+#: app_home/templates/main_base.html:74
+msgid "LogOut"
+msgstr "Выход"
+
+#: app_shops/models.py:10 app_shops/models.py:34
+msgid "name"
+msgstr "имя"
+
+#: app_shops/models.py:16
+msgid "shops"
+msgstr "магазины"
+
+#: app_shops/models.py:17 app_shops/models.py:33 app_shops/models.py:97
+msgid "shop"
+msgstr "магазин"
+
+#: app_shops/models.py:36 app_users/models.py:39
+msgid "price"
+msgstr "цена"
+
+#: app_shops/models.py:37 app_users/models.py:40 app_users/models.py:55
+msgid "amount"
+msgstr "количество"
+
+#: app_shops/models.py:92 app_shops/models.py:93 app_shops/models.py:108
+#: app_users/models.py:38 app_users/models.py:54
+msgid "goods"
+msgstr "товары"
+
+#: app_shops/models.py:98 app_shops/models.py:109
+msgid "is percentage"
+msgstr "это процент"
+
+#: app_shops/models.py:99 app_shops/models.py:110
+msgid "percentage"
+msgstr "процент"
+
+#: app_shops/models.py:100 app_shops/models.py:111
+msgid "money"
+msgstr "деньги"
+
+#: app_shops/models.py:103
+msgid "discounts shops"
+msgstr "скидки магазинов"
+
+#: app_shops/models.py:104
+msgid "discount shop"
+msgstr "скидка магазина"
+
+#: app_shops/models.py:114
+msgid "discounts goods"
+msgstr "скидки товаров"
+
+#: app_shops/models.py:115
+msgid "discount good"
+msgstr "скидка товара"
+
+#: app_shops/templates/app_shops/top_bought_goods.html:43
+msgid "Today"
+msgstr "Сегодня"
+
+#: app_shops/templates/app_shops/top_bought_goods.html:44
+msgid "Yesterday"
+msgstr "Вчера"
+
+#: app_shops/templates/app_shops/top_bought_goods.html:45
+msgid "Last 7 Days"
+msgstr "Последние 7 Дней"
+
+#: app_shops/templates/app_shops/top_bought_goods.html:46
+msgid "Last 30 Days"
+msgstr "Последние 30 дней"
+
+#: app_shops/templates/app_shops/top_bought_goods.html:47
+msgid "This Month"
+msgstr "Этот Месяц"
+
+#: app_shops/templates/app_shops/top_bought_goods.html:52
+msgid "Apply"
+msgstr "Применить"
+
+#: app_shops/templates/app_shops/top_bought_goods.html:53
+msgid "Cancel"
+msgstr "Отменить"
+
+#: app_shops/templates/app_shops/top_bought_goods.html:54
+msgid "From"
+msgstr "От"
+
+#: app_shops/templates/app_shops/top_bought_goods.html:55
+msgid "To"
+msgstr "До"
+
+#: app_shops/templates/app_shops/top_bought_goods.html:56
+msgid "Custom"
+msgstr "Персональный"
+
+#: app_shops/templates/app_shops/top_bought_goods.html:58
+msgid "Su"
+msgstr "Вс"
+
+#: app_shops/templates/app_shops/top_bought_goods.html:59
+msgid "Mo"
+msgstr "Пн"
+
+#: app_shops/templates/app_shops/top_bought_goods.html:60
+msgid "Tu"
+msgstr "Вт"
+
+#: app_shops/templates/app_shops/top_bought_goods.html:61
+msgid "We"
+msgstr "Ср"
+
+#: app_shops/templates/app_shops/top_bought_goods.html:62
+msgid "Th"
+msgstr "Чт"
+
+#: app_shops/templates/app_shops/top_bought_goods.html:63
+msgid "Fr"
+msgstr "Пт"
+
+#: app_shops/templates/app_shops/top_bought_goods.html:64
+msgid "Sa"
+msgstr "Сб"
+
+#: app_shops/templates/app_shops/top_bought_goods.html:67
+msgid "January"
+msgstr "Январь"
+
+#: app_shops/templates/app_shops/top_bought_goods.html:68
+msgid "February"
+msgstr "Февраль"
+
+#: app_shops/templates/app_shops/top_bought_goods.html:69
+msgid "March"
+msgstr "Март"
+
+#: app_shops/templates/app_shops/top_bought_goods.html:70
+msgid "April"
+msgstr "Апрель"
+
+#: app_shops/templates/app_shops/top_bought_goods.html:71
+msgid "May"
+msgstr "Май"
+
+#: app_shops/templates/app_shops/top_bought_goods.html:72
+msgid "June"
+msgstr "Июнь"
+
+#: app_shops/templates/app_shops/top_bought_goods.html:73
+msgid "July"
+msgstr "Июль"
+
+#: app_shops/templates/app_shops/top_bought_goods.html:74
+msgid "August"
+msgstr "Август"
+
+#: app_shops/templates/app_shops/top_bought_goods.html:75
+msgid "September"
+msgstr "Сентябрь"
+
+#: app_shops/templates/app_shops/top_bought_goods.html:76
+msgid "October"
+msgstr "Октябрь"
+
+#: app_shops/templates/app_shops/top_bought_goods.html:77
+msgid "November"
+msgstr "Ноябрь"
+
+#: app_shops/templates/app_shops/top_bought_goods.html:78
+msgid "December"
+msgstr "Декабрь"
+
+#: app_users/admin.py:29 app_users/admin.py:66
+msgid "username"
+msgstr "имя пользователя"
+
+#: app_users/admin.py:34 app_users/admin.py:67
+msgid "goods name"
+msgstr "название товара"
+
+#: app_users/admin.py:39 app_users/admin.py:68
+msgid "shop name"
+msgstr "название магазина"
+
+#: app_users/admin.py:86 app_users/models.py:16
+msgid "money in account"
+msgstr "деньги на аккаунте"
+
+#: app_users/forms.py:35 app_users/forms.py:75
+msgid "Login"
+msgstr "Логин"
+
+#: app_users/forms.py:40 app_users/forms.py:61
+msgid "Password"
+msgstr "Пароль"
+
+#: app_users/forms.py:66
+msgid "Repeat password"
+msgstr "Повторить пароль"
+
+#: app_users/forms.py:79
+msgid "First Name"
+msgstr "Имя"
+
+#: app_users/forms.py:83
+msgid "Last Name"
+msgstr "Фамилия"
+
+#: app_users/models.py:14
+msgid "user"
+msgstr "пользователь"
+
+#: app_users/models.py:15
+msgid "about"
+msgstr "о пользователе"
+
+#: app_users/models.py:17
+msgid "amount spent money"
+msgstr "сумма потраченных денег"
+
+#: app_users/models.py:32
+msgid "profiles"
+msgstr "профайл"
+
+#: app_users/models.py:33 app_users/models.py:37 app_users/models.py:53
+msgid "profile"
+msgstr "профайл"
+
+#: app_users/models.py:41
+msgid "data"
+msgstr "дата"
+
+#: app_users/models.py:44 app_users/models.py:45
+msgid "shopping history"
+msgstr "история покупок"
+
+#: app_users/models.py:56
+msgid "add time"
+msgstr "время добавления"
+
+#: app_users/models.py:59
+msgid "users cart"
+msgstr "корзина пользователей"
+
+#: app_users/models.py:60
+#, fuzzy
+#| msgid "users cart"
+msgid "user cart"
+msgstr "корзина пользователей"
+
+#: app_users/templates/app_users/cart_page.html:44
+msgid "Total purchase cost"
+msgstr "Общая стоимость покупки"
+
+#: app_users/templates/app_users/cart_page.html:50
+msgid "BUY"
+msgstr "КУПИТЬ"
+
+#: app_users/templates/app_users/cart_page.html:60
+msgid "List of purchased goods"
+msgstr "Список купленных товаров"
+
+#: app_users/templates/app_users/cart_page.html:135
+msgid "items left in stock"
+msgstr "товаров осталось на складе"
+
+#: app_users/templates/app_users/cart_page.html:141
+msgid "item left in stock"
+msgstr "товар осталось на складе"
+
+#: app_users/templates/app_users/cart_page.html:251
+#: app_users/templates/app_users/purchase_history.html:15
+#: app_users/templates/app_users/user_page.html:151
+msgid "Amount"
+msgstr "Количество"
+
+#: app_users/templates/app_users/change_about.html:24
+msgid "Change"
+msgstr "Изменить"
+
+#: app_users/templates/app_users/purchase_history.html:12
+#: app_users/templates/app_users/user_page.html:148
+msgid "Date"
+msgstr "Дата"
+
+#: app_users/templates/app_users/purchase_history.html:13
+#: app_users/templates/app_users/user_page.html:149
+msgid "Shop"
+msgstr "Бренд"
+
+#: app_users/templates/app_users/purchase_history.html:14
+#: app_users/templates/app_users/user_page.html:150
+msgid "Goods"
+msgstr "Товар"
+
+#: app_users/templates/app_users/purchase_history.html:16
+#: app_users/templates/app_users/user_page.html:152
+msgid "Price"
+msgstr "Цена"
+
+#: app_users/templates/app_users/sign_up.html:9
+msgid "SignUp Form"
+msgstr "Регистрационная форма"
+
+#: app_users/templates/app_users/user_page.html:22
+msgid "Add money"
+msgstr "Внесение средств"
+
+#: app_users/templates/app_users/user_page.html:95
+msgid "Your status"
+msgstr "Ваш статус"
+
+#: app_users/templates/app_users/user_page.html:141
+msgid "ADD"
+msgstr "ВНЕСТИ"
+
+#, fuzzy
+#~| msgid "Home"
+#~ msgid "Home Page"
+#~ msgstr "Главная"
+
+#, fuzzy
+#~| msgid "History"
+#~ msgid "History "
+#~ msgstr "История"

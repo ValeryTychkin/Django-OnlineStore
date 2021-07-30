@@ -1,0 +1,205 @@
+{% extends 'main_base.html' %}
+{% load i18n %}
+
+{% block body %}
+    <div class="container" style="padding-top: 5rem;">
+        <div class="row" data-masonry="{&quot;percentPosition&quot;: true }" style="position: relative; height: 690px;">
+            <div class="col-sm-6 col-lg-4 mb-4" style="position: absolute; left: 0%; top: 0px;">
+                <a href="{% url 'add goods in cart' goods.0.id %}" class="a-hidden">
+                    <div class="card card-hover">
+                        <div class="bg-img" style="background-image: url({{ goods.0.img.url }}); height: 200px;"></div>
+                        <div class="card-body">
+                            <div class="row g-0">
+                            <div class="col-5">
+                                <h5 class="card-title">{{ goods.0.name }}</h5>
+                                <figcaption class="blockquote-footer mb-2 text-muted">
+                                    <cite title="Source Title">{{ goods.0.shop.name }}</cite>
+                                </figcaption>
+                                {% if goods.0.float_price != goods.0.price_with_discount %}
+                                    <div class="d-inline-block align-middle">
+                                        <s style="color: #b10101">
+                                            <h4 style="color: #5a5a5a; margin-right: 1rem;">{{ goods.0.float_price }}</h4>
+                                        </s>
+                                    </div>
+                                {% endif %}
+                                <button class="btn btn-outline-danger d-inline">{% trans "ADD TO CART" %}</button>
+                            </div>
+                                <div class="col-7">
+                                    <h1 class="text-md-center" style="font-size: 3rem">{{ goods.0.price_with_discount }} $</h1>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col-sm-6 col-lg-4 mb-4" style="position: absolute; left: 33.3333%; top: 0px;">
+                <div class="card p-3 text-center card-hover">
+                    <a class="a-hidden" href="{% url 'shop page' shops.0.id %}">
+                        <h1>{{ shops.0.name }}</h1>
+                    </a>
+                </div>
+            </div>
+            <div class="col-sm-6 col-lg-4 mb-4" style="position: absolute; left: 66.6667%; top: 0px;">
+                <div class="card card-hover">
+                    <a href="{% url 'add goods in cart' goods.1.id %}" class="a-hidden">
+                        <div class="bg-img" style="background-image: url({{ goods.1.img.url }}); height: 200px;"></div>
+                        <div class="card-body">
+                            <div class="row g-0">
+                                <div class="col-5">
+                                    <h5 class="card-title">{{ goods.1.name }}</h5>
+                                    <figcaption class="blockquote-footer mb-2 text-muted">
+                                        <cite title="Source Title">{{ goods.1.shop.name }}</cite>
+                                    </figcaption>
+                                    {% if goods.1.float_price != goods.1.price_with_discount %}
+                                        <div class="d-inline-block align-middle">
+                                            <s style="color: #b10101">
+                                                <h4 style="color: #5a5a5a; margin-right: 1rem;">{{ goods.1.float_price }}</h4>
+                                            </s>
+                                        </div>
+                                    {% endif %}
+                                    <button class="btn btn-outline-danger d-inline">{% trans "ADD TO CART" %}</button>
+                                </div>
+                                <div class="col-7">
+                                    <h1 class="text-md-center" style="font-size: 3rem">{{ goods.1.price_with_discount }} $</h1>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="col-sm-6 col-lg-4 mb-4" style="position: absolute; left: 33.3333%; top: 171px;">
+                {% if discounts.0.is_percentage %}
+                    {% if random_discounts_view.0 %}
+                        <div class="card text-center card-hover">
+                            <a class="a-hidden" href="{% url 'shop page'  discounts.0.shop.id %}">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ discounts.0.shop.name }}</h5>
+                                    <p class="card-text mb-0">{% trans "You have a discount:" %}</p>
+                                    <p class="card-text" style="font-size: 3.8rem;">{{ discounts.0.percentage }}%</p>
+                                </div>
+                            </a>
+                        </div>
+                    {% else %}
+                        <div class="card card-hover">
+                            <a class="a-hidden" href="{% url 'shop page'  discounts.0.shop.id %}">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col align-self-center">
+                                            <h5 class="card-title">{{ discounts.0.shop.name }}</h5>
+                                            <p class="card-text">{% trans "You have a discount:" %}</p>
+                                        </div>
+                                        <div class="col">
+                                            <p class="text-end mb-0" style="margin-right: 1.8rem; font-size: 3.5rem">{{ discounts.0.percentage }}%</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    {% endif %}
+                {% else %}
+                    <div class="card text-white p-3 card-hover" style="background-color: #4C76B1;">
+                        <a class="a-hidden" href="{% url 'shop page'  discounts.0.shop.id %}">
+                            <figure class="mb-0">
+                                <blockquote class="blockquote text-start">
+                                    <p>{{ discounts.0.shop.name }}</p>
+                                </blockquote>
+                                {% trans "You have a discount" %} <span class="fs-1 fw-bold mx-3">{{ discounts.0.money }} $</span>
+                            </figure>
+                        </a>
+                    </div>
+                {% endif %}
+            </div>
+            <div class="col-sm-6 col-lg-4 mb-4" style="position: absolute; left: 33.3333%; top: 310px;">
+                {% if discounts.1.is_percentage %}
+                    {% if random_discounts_view.1 %}
+                        <div class="card text-center card-hover">
+                            <a class="a-hidden" href="{% url 'shop page'  discounts.1.shop.id %}">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ discounts.1.shop.name }}</h5>
+                                    <p class="card-text mb-0">{% trans "You have a discount:" %}</p>
+                                    <p class="card-text" style="font-size: 3.8rem;">{{ discounts.1.percentage }}%</p>
+                                </div>
+                            </a>
+                        </div>
+                    {% else %}
+                        <div class="card card-hover">
+                            <a class="a-hidden" href="{% url 'shop page'  discounts.1.shop.id %}">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col align-self-center">
+                                            <h5 class="card-title">{{ discounts.1.shop.name }}</h5>
+                                            <p class="card-text">{% trans "You have a discount:" %}</p>
+                                        </div>
+                                        <div class="col">
+                                            <p class="text-end mb-0" style="margin-right: 1.8rem; font-size: 3.5rem">{{ discounts.1.percentage }}%</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    {% endif %}
+                    {% else %}
+                        <div class="card card-hover text-white p-3" style="background-color: #4C76B1;">
+                            <a class="a-hidden" href="{% url 'shop page'  discounts.1.shop.id %}">
+                                <figure class="mb-0">
+                                    <blockquote class="blockquote text-start">
+                                        <p>{{ discounts.1.shop.name }}</p>
+                                    </blockquote>
+                                    {% trans "You have a discount" %} <span class="fs-1 fw-bold mx-3">{{ discounts.1.money }} $</span>
+                                </figure>
+                            </a>
+                        </div>
+                {% endif %}
+            </div>
+            <div class="col-sm-6 col-lg-4 mb-4" style="position: absolute; left: 0%; top: 378px;">
+                <div class="card card-hover p-3 text-center">
+                    <a class="a-hidden" href="{% url 'shop page'  discounts.1.shop.id %}">
+                        <h1>{{ shops.1.name }}</h1>
+                    </a>
+                </div>
+            </div>
+            <div class="col-sm-6 col-lg-4 mb-4" style="position: absolute; left: 33.3333%; top: 488px;">
+                {% if discounts.2.is_percentage %}
+                    {% if random_discounts_view.2 %}
+                        <div class="card card-hover text-center">
+                            <a class="a-hidden" href="{% url 'shop page'  discounts.2.shop.id %}">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ discounts.2.shop.name }}</h5>
+                                    <p class="card-text mb-0">{% trans "You have a discount:" %}</p>
+                                    <p class="card-text" style="font-size: 3.8rem;">{{ discounts.2.percentage }}%</p>
+                                </div>
+                            </a>
+                        </div>
+                    {% else %}
+                        <div class="card card-hover">
+                            <a class="a-hidden" href="{% url 'shop page'  discounts.2.shop.id %}">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col align-self-center">
+                                            <h5 class="card-title">{{ discounts.2.shop.name }}</h5>
+                                            <p class="card-text">{% trans "You have a discount:" %}</p>
+                                        </div>
+                                        <div class="col">
+                                            <p class="text-end mb-0" style="margin-right: 1.8rem; font-size: 3.5rem">{{ discounts.2.percentage }}%</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    {% endif %}
+                {% else %}
+                    <div class="card card-hover text-white p-3" style="background-color: #4C76B1;">
+                        <a class="a-hidden" href="{% url 'shop page'  discounts.2.shop.id %}">
+                            <figure class="mb-0">
+                                <blockquote class="blockquote text-start">
+                                    <p>{{ discounts.2.shop.name }}</p>
+                                </blockquote>
+                                {% trans "You have a discount" %} <span class="fs-1 fw-bold mx-3">{{ discounts.2.money }} $</span>
+                            </figure>
+                        </a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

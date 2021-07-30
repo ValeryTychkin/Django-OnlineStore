@@ -1,0 +1,30 @@
+{% extends 'main_base.html' %}
+{% load static %}
+{% load i18n %}
+
+{% block body %}
+    <div align="center" class="container">
+        <div class="card mt-5" style="background: #FDFBFB; max-width: 35rem;">
+            <div class="card-body pb-4">
+                <div class="mt-3" style="max-width: 25rem;">
+                    <form method="POST">{% csrf_token %}
+                        <h4 class="mb-3">{{ user_obj.user.username }}</h4>
+                        <div class="mb-4">
+                            <label>
+                                {{ user_form.f_name }}
+                            </label>
+                            <label>
+                                {{ user_form.l_name }}
+                            </label>
+                        </div>
+                        <div class="form-floating my-3">
+                            {{ user_form.about }}
+                            <label for="aboutTextarea">{% trans "About" %}</label>
+                        </div>
+                        <button type="submit" class="btn btn-sm btn-brown mt-2" style="opacity: 75%">{% trans "Change" %}</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

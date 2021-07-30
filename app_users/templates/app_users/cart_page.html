@@ -1,0 +1,274 @@
+{% extends 'main_base.html' %}
+{% load static %}
+{% load i18n %}
+
+
+{% block body %}
+    <div class="container h-100" style="padding-top: 6rem;">
+        <div id="cart_container" class="row g-0">
+            <div id="goods_col" style="flex: 0 0 auto; width: 40%;">
+                <div class="row g-0">
+                    {% for goods in goods_list %}
+                        <div id="goods_{{ goods.id }}" class="col-12" style="border-bottom: 1px solid #9d9d9d">
+                            <div class="row g-0 py-4">
+                                <div class="col-4" style="min-width: 9rem;">
+                                    <div name="goods_img" id="goods_img_{{ goods.id }}" class="w-100 bg-img rounded-3" style="background-image: url({{ goods.goods.img.url }})"></div>
+                                    <div align="center" class="mt-3">
+                                        <button id="minus_{{ goods.id }}" class="btn py-0 px-2 me-2" onclick="change_amount_good({{ goods.id }}, 'minus')" style="border: 1px solid #000000"><span>-</span></button>
+                                        <span id="cart_goods_amount_{{ goods.id }}">{{ goods.amount }}</span>
+                                        <button id="plus_{{ goods.id }}" class="btn py-0 px-2 ms-2" onclick="change_amount_good({{ goods.id }}, 'plus')" style="border: 1px solid #000000"><span>+</span></button>
+                                    </div>
+                                </div>
+                                <div class="col-8 ps-4 pt-3" style="min-height: 8rem; min-width: 11rem;">
+                                    <div id="goods_info_{{ goods.id }}">
+                                        <h3 class="m-0">{{ goods.goods.name }}</h3>
+                                        <p class="m-0 ps-3" style="color: #6c757d">{{ goods.goods.shop.name }}</p>
+                                        <h2 id="price_cart_goods_{{ goods.id }}" class="m-0"></h2>
+                                    </div>
+                                    <div class="mt-2">
+                                        <input type="image" class="rounded-3" src="{% static 'img/app_users/bin.png' %}" style="width: 2.2rem; border: 1px solid #6d6d6d;" onclick="change_amount_good({{ goods.id }}, 'del')">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div id="middle_col" style="flex: 0 0 auto;"></div>
+            <div style="flex: 0 0 auto; width: 33%;">
+                <div id="total_cost_col" class="mt-4-5" style="border-radius: 1.1rem; background-color: rgba(225,196,175,0.85); min-width: 15rem;">
+                    <div class="pt-3" style="width: 100%; padding-right: 8%">
+                        <div id="cart_img" class="bg-img mx-auto" style="background-image: url({% static 'img/app_users/big_cart.png' %}); width: 60%; filter: invert(10%) sepia(8%) saturate(4360%) hue-rotate(343deg) brightness(94%) contrast(89%);"></div>
+                    </div>
+                    <div class="text-center mt-2">
+                        <h1 class="m-0" style="transform: scale(0.9)">{% trans 'Total purchase cost' %}</h1>
+                        <h1 id="total_cost" class="m-0 pt-2" style="transform: scale(1.15)"></h1>
+                        <div class="w-100 d-flex align-items-center justify-content-center" style="height: 1.8rem; margin-top: 0.7rem;">
+                            <div id="wallet_img" class="bg-img h-100 d-inline-block" style="background-image: url({% static 'img/app_users/wallet.png' %})"></div>
+                            <span class="fs-4 ms-2 pt-2">{{ user_profile.money_in_account }}</span><span class="fs-4 ms-1 pt-2">$</span>
+                        </div>
+                        <button class="btn btn-lg btn-outline-danger d-inline mt-4-5 mb-4-5" onclick="post_buy_goods('{% url 'api buy goods' %}')">{% trans 'BUY' %}</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="success_model" class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+        <div class="modal-dialog modal-dialog-scrollable modal-lg">
+            <div class="modal-content" style="background-color: #F8F4F2">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">{% trans 'List of purchased goods' %}:</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="location.reload()"></button>
+                </div>
+                <div class="modal-body" id="success_model_body">
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        var wait_post = false  {# Флаг Включен ли таймер для отправки JSON о изминеннии кол. товаров в корзине #}
+        var timer_to_post
+        var cart_container_width
+        var goods_col_width
+        var total_cost_col_width
+        var goods_img_width
+        var cart_img_width
+        var wallet_img_height
+
+        function run_render_cart_page_json() {
+            $.each(api_cart_data, render_sum_price_amount)
+            render_total_cost()
+
+
+            cart_container_width = $('#cart_container').width()
+            goods_col_width = $('#goods_col').width()
+            total_cost_col_width = $('#total_cost_col').width()
+            $('#middle_col').css({'width':parseInt(cart_container_width-(goods_col_width+total_cost_col_width))+'px'})
+
+            goods_img_width = $('div[name="goods_img"]').width()
+            $('div[name="goods_img"]').css({'height':goods_img_width+'px'})
+
+            cart_img_width = $('#cart_img').width()
+            $('#cart_img').css({'height':cart_img_width+'px'})
+
+            wallet_img_height = $('#wallet_img').height()
+            $('#wallet_img').css({'width':wallet_img_height+'px'})
+        }
+
+
+        function change_amount_good(id, symbol){
+            var json_key = get_json_goods_key(id)
+
+            if (symbol==='minus'){
+                if ((api_cart_data[json_key].amount_goods)>1){
+                    api_cart_data[json_key].amount_goods -= 1
+                }
+            }else if (symbol==='plus') {
+                api_cart_data[json_key].amount_goods += 1
+            } else if (symbol==='del'){
+                api_cart_data[json_key].amount_goods = 0
+            }
+            $('#cart_goods_amount_'+id).text(api_cart_data[json_key].amount_goods)
+            render_sum_price_amount(id, api_cart_data[json_key])
+
+            render_total_cost()
+            setTimeout(function(){
+                $('#'+symbol+'_'+id).blur()
+            }, 125)
+            if (wait_post===true){
+                clearTimeout(timer_to_post)
+            }
+            timer_to_post = setTimeout(post_new_cart, 650)
+            wait_post=true
+        }
+
+
+        function render_sum_price_amount(key, item){
+            $('#price_cart_goods_'+item.goods_cart_id).text((item.amount_goods*item.goods_price_with_discount).toFixed(2)+' $')
+
+            {# Есть ли такое кол. товаров на складе (если нет, то изминения стиля карточки данного товара) #}
+            if (item.amount_goods > item.amount_in_stock){
+                $('#goods_img_'+item.goods_cart_id).css({opacity: 0.6})
+                $('#goods_info_'+item.goods_cart_id).css({opacity: 0.6})
+                if (!$("h4").is('#amount_goods_shop_'+item.goods_cart_id)){
+                    if (item.amount_in_stock>1){
+                        $('#goods_info_'+item.goods_cart_id).after(
+                                                            '<h4 class="m-0 pt-3" id="amount_goods_shop_'+item.goods_cart_id+'">'
+                                                                +item.amount_in_stock+' '+'{% trans 'items left in stock' %}'
+                                                            +'</h4>')
+
+                    } else {
+                        $('#goods_info_'+item.goods_cart_id).after(
+                                                            '<h4 class="m-0 pt-3" id="amount_goods_shop_'+item.goods_cart_id+'">'
+                                                                +item.amount_in_stock+' '+'{% trans 'item left in stock' %}'
+                                                            +'</h4>')
+                    }
+                }
+            } else {
+                $('#goods_img_'+item.goods_cart_id).css({opacity: 1})
+                $('#goods_info_'+item.goods_cart_id).css({opacity: 1})
+
+                if ($("h4").is('#amount_goods_shop_'+item.goods_cart_id)) {
+                    $('#amount_goods_shop_'+item.goods_cart_id).remove()
+                }
+            }
+        }
+
+
+        function render_total_cost(){
+            var total_cost = 0
+            $.each(api_cart_data, function (key, item){
+                if (item.amount_goods <= item.amount_in_stock){
+                    total_cost += item.goods_price_with_discount * item.amount_goods
+                }
+            })
+            $('#total_cost').text(total_cost.toFixed(2)+' $')
+        }
+
+
+        function get_json_goods_key(id){
+            var json_key = null
+            $.each(api_cart_data, function (key, item){
+                if (item.goods_cart_id === id){
+                    json_key = key
+                }
+            })
+            return json_key
+        }
+
+
+        $(window).resize(function(){
+            cart_container_width = $('#cart_container').width()
+            goods_col_width = $('#goods_col').width()
+            total_cost_col_width = $('#total_cost_col').width()
+            $('#middle_col').css({'width':parseInt(cart_container_width-(goods_col_width+total_cost_col_width))+'px'})
+
+            goods_img_width = $('div[name="goods_img"]').width()
+            $('div[name="goods_img"]').css({'height':goods_img_width+'px'})
+
+            cart_img_width = $('#cart_img').width()
+            $('#cart_img').css({'height':cart_img_width+'px'})
+
+            wallet_img_height = $('#wallet_img').height()
+            $('#wallet_img').css({'width':wallet_img_height+'px'})
+        })
+
+
+        function post_new_cart (){
+            $.ajax({
+                url: '{% url 'api user cart' %}',
+                type: 'POST',
+                data: JSON.stringify({'goods_cart': api_cart_data}),
+                contentType: "application/json; charset=utf-8",
+                beforeSend: function (xhr, settings) {
+                    xhr.setRequestHeader("X-CSRFToken", '{{ csrf_token }}');
+                }
+            })
+            location.reload()
+        }
+
+
+        function post_buy_goods (url){
+            if (wait_post === false){
+                var goods_buy = []  {# Список товаров, кол. которых хватает на складе для покупки #}
+                $.each(api_cart_data, function (key, item){
+                    if (item.amount_goods<=item.amount_in_stock){
+                        goods_buy.push(item)
+                    }
+                })
+                $.ajax({
+                    url: url,
+                    type: 'POST',
+                    data: JSON.stringify({'goods_buy': goods_buy}),
+                    contentType: "application/json; charset=utf-8",
+                    beforeSend: function (xhr, settings) {
+                        xhr.setRequestHeader("X-CSRFToken", '{{ csrf_token }}');
+                    },
+                    success: function (){
+                        del_bought_goods(goods_buy)
+                        render_total_cost_zero()
+                        render_success_model(goods_buy)
+                    }
+                })
+            }
+        }
+
+
+        function del_bought_goods(bought_goods){
+            $.each(bought_goods, function (key, item){
+                $('#goods_'+item.goods_cart_id).remove()
+            })
+        }
+
+
+        function render_total_cost_zero(){
+            var zero = 0
+            $('#total_cost').text(zero.toFixed(2)+' $')
+        }
+
+
+        function render_success_model (bought_goods) {
+        {# Рендер списка купленных товаров #}
+            $.each(bought_goods, function (key, item){
+                var total_price = item.goods_price_with_discount * item.amount_goods
+                var amount_name = "{% trans 'Amount' %}"
+                var goods =
+                    '<div class="col" style="border-bottom: 1px solid #9d9d9d">'
+                        +'<div class="row g-0 py-4">'
+                            +'<div class="col-4" style="min-width: 9rem;">'
+                                +'<img src="' + item.goods_img  + '" class="w-100">'
+                            +'</div>'
+                        +'<div class="col-8 ps-4 pt-3" style="min-height: 8rem; min-width: 11rem;">'
+                            +'<h3 class="m-0">' + item.goods_name + '</h3>'
+                            +'<p class="m-0 ps-3" style="color: #6c757d">' + item.shop_name + '</p>'
+                            +'<h4>' + amount_name + ': ' + item.amount_goods + '</h4>'
+                            +'<h1 class="mt-3">'+ total_price.toFixed(2) +' $</h1>'
+                        +'</div>'
+                    +'</div>'
+                $('#success_model_body').append(goods)
+            })
+            setTimeout(function (){$('#success_model').modal('show')}, 100)
+        }
+
+    </script>
+{% endblock %}
