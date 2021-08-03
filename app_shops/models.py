@@ -1,4 +1,3 @@
-import PIL  # Предотвращает удаления PIL из requirements.txt если в PyCharm включен «remove unused requirements»
 import os
 from decimal import Decimal
 

@@ -1,6 +1,3 @@
-import docutils     # Предотвращает удаления docutils из requirements.txt
-                    # если в PyCharm включен «remove unused requirements»
-
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import User

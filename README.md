@@ -1,13 +1,13 @@
 # Django–OnlineStore
   
-**Version 1.2.1**
+**Version 1.2.2**
 
 > * The functionality of this web–application:
 >     *  SignUp; LogIn
 >     *  Buy goods; Add money to created account
 >     *  View account cart; View top bought goods
 
-####(All comments in code on RUS)
+#### (All comments in code on RUS)
 
 <hr style="border:2px solid gray">
 

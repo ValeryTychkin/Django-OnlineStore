@@ -3,26 +3,26 @@ from django.urls import reverse
 
 from app_shops.models import Shop, DiscountShop, Goods
 
-SHOPS_NUM = 10
+MODELS_OBJS_NUM = 10
 
 
 class HomePageTest(TestCase):
 
     @classmethod
     def setUpTestData(cls):
-        for post_num in range(SHOPS_NUM):
+        for shop_num in range(MODELS_OBJS_NUM):
             Shop.objects.create(
-                name=f'test_{post_num}'
+                name=f'test_{shop_num}'
             )
-        for disc_num in range(SHOPS_NUM):
+        for disc_num in range(MODELS_OBJS_NUM):
             DiscountShop.objects.create(
                 shop=Shop.objects.get(id=1),
                 percentage=disc_num
             )
-        for good_num in range(SHOPS_NUM):
+        for goods_num in range(MODELS_OBJS_NUM):
             Goods.objects.create(
                 shop=Shop.objects.get(id=1),
-                name=good_num
+                name=goods_num
             )
 
     def test_get(self):

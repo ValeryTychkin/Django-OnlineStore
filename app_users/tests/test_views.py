@@ -21,24 +21,24 @@ class UserPageTest(TestCase):
                 last_name=f'last_name{user_num}',
                 password=USERS_PASSWORD
             )
-        for post_num in range(SHOPS_NUM):
+        for shop_num in range(SHOPS_NUM):
             Shop.objects.create(
-                name=f'test_{post_num}'
+                name=f'test_{shop_num}'
             )
         for disc_num in range(SHOPS_NUM):
             DiscountShop.objects.create(
                 shop=Shop.objects.get(id=1),
                 percentage=disc_num
             )
-        for good_num in range(SHOPS_NUM):
+        for goods_num in range(SHOPS_NUM):
             Goods.objects.create(
                 shop=Shop.objects.get(id=1),
-                name=good_num
+                name=goods_num
             )
 
     def test_get(self):
         url = reverse('user')
-        response = self.client.get(url, )
+        response = self.client.get(url, follow=True)
 
         # Блокировка входа в личный кабинет другого пользователя
         self.assertEqual(response.status_code, 200)
@@ -83,24 +83,24 @@ class ChangeAboutPage(TestCase):
                 last_name=f'last_name{user_num}',
                 password=USERS_PASSWORD
             )
-        for post_num in range(SHOPS_NUM):
+        for shop_num in range(SHOPS_NUM):
             Shop.objects.create(
-                name=f'test_{post_num}'
+                name=f'test_{shop_num}'
             )
         for disc_num in range(SHOPS_NUM):
             DiscountShop.objects.create(
                 shop=Shop.objects.get(id=1),
                 percentage=disc_num
             )
-        for good_num in range(SHOPS_NUM):
+        for goods_num in range(SHOPS_NUM):
             Goods.objects.create(
                 shop=Shop.objects.get(id=1),
-                name=good_num
+                name=goods_num
             )
 
     def test_get(self):
         url = reverse('change about')
-        response = self.client.get(url, )
+        response = self.client.get(url, follow=True)
 
         # Блокировка входа на страницу о себе другого пользователя
         self.assertEqual(response.status_code, 200)
@@ -108,7 +108,7 @@ class ChangeAboutPage(TestCase):
 
         user_login = self.client.login(username='test0', password=USERS_PASSWORD)
         self.assertTrue(user_login)
-        response = self.client.get(url, )
+        response = self.client.get(url, follow=True)
 
         # Доступ в на страницу о себе
         self.assertEqual(response.status_code, 200)
@@ -137,24 +137,24 @@ class RegisterPageTest(TestCase):
 
     @classmethod
     def setUpTestData(cls):
-        for post_num in range(SHOPS_NUM):
+        for shop_num in range(SHOPS_NUM):
             Shop.objects.create(
-                name=f'test_{post_num}'
+                name=f'test_{shop_num}'
             )
         for disc_num in range(SHOPS_NUM):
             DiscountShop.objects.create(
                 shop=Shop.objects.get(id=1),
                 percentage=disc_num
             )
-        for good_num in range(SHOPS_NUM):
+        for goods_num in range(SHOPS_NUM):
             Goods.objects.create(
                 shop=Shop.objects.get(id=1),
-                name=good_num
+                name=goods_num
             )
 
     def test_get(self):
         url = reverse('sign-up')
-        response = self.client.get(url, )
+        response = self.client.get(url, follow=True)
 
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'app_users/sign_up.html')
