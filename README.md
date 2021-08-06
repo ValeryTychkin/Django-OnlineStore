@@ -1,11 +1,12 @@
 # Django–OnlineStore
   
-**Version 1.2.2**
+**Version 1.2.3**
 
 > * The functionality of this web–application:
 >     *  SignUp; LogIn
 >     *  Buy goods; Add money to created account
 >     *  View account cart; View top bought goods
+>     *  Tests for Django views and DRF views
 
 #### (All comments in code on RUS)
 
@@ -39,25 +40,25 @@
 >Processes inquiries related to goods.
 
 ### *Models:*
-*  ###Shop
+*  ### Shop
 
 name |
 :---: |
 `Char` |
 
-*  ###Goods
+*  ### Goods
 
 name | img | price | amount | shop
 :---: | :---: | :---: | :---: | :---:
 `Char` | `Image` | `Decimal` | `PositiveInt` | `ForeignKey`<br>`(Shop)`  
 
-*  ###DiscountShop
+*  ### DiscountShop
 
 shop | is_percentage | percentage | money
 :---: | :---: | :---: | :---: 
 `ForeignKey`<br>`(Shop)` | `Bool` | `PositiveInt` | `PositiveInt`
 
-*  ###DiscountGoods
+*  ### DiscountGoods
 
 goods | is_percentage | percentage | money
 :---: | :---: | :---: | :---: 
@@ -71,19 +72,19 @@ goods | is_percentage | percentage | money
 >Processes inquiries related to users.
 
 ### *Models:*
-*  ###Profile
+*  ### Profile
 
 user | about | money_in_account | amount_spent_money
 :---: | :---: | :---: | :---: 
 `ForeignKey`<br>`(User)`  | `Char` | `Decimal` | `Decimal`
 
-*  ###ShoppingHistory
+*  ### ShoppingHistory
 
 profile | goods | price | amount | date
 :---: | :---: | :---: | :---: | :---: 
 `ForeignKey`<br>`(Pofile)` | `ForeignKey`<br>`(Goods)` | `Decimal` | `PositiveInt` | `Date` 
 
-*  ###ShoppingHistory
+*  ### ShoppingHistory
 
 profile | goods | amount | add_time
 :---: | :---: | :---: | :---: 

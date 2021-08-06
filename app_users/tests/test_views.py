@@ -45,7 +45,7 @@ class UserPageTest(TestCase):
         self.assertTemplateUsed(response, 'app_home/home_page.html')
 
         user_login = self.client.login(username='test0', password=USERS_PASSWORD)
-        response = self.client.get(url, )
+        response = self.client.get(url)
         self.assertTrue(user_login)
 
         # Доступ в свой личный кабинет

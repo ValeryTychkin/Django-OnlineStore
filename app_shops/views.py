@@ -7,10 +7,10 @@ from app_shops.models import Shop, Goods
 from app_users.models import Profile, Cart
 
 
-class AddGoodInCart(View):
+class AddGoodsInCart(View):
     def get(self, request, id_goods):
         if request.user.is_authenticated:
-            buyer_profile = Profile.objects.get(user_id=request.user.id)
+            buyer_profile = Profile.objects.only('id').get(user_id=request.user.id)
             this_goods = Goods.objects.get(id=id_goods)
             if this_goods.amount > 0:
                 # Есть ли уже данный товар в корзине ->+  Увеличивает кол. данного товара в корзине пользователя
@@ -21,7 +21,7 @@ class AddGoodInCart(View):
                 else:
                     Cart.objects.create(profile=buyer_profile,
                                         goods=this_goods)
-        return redirect(request.META.get('HTTP_REFERER', ))
+        return redirect(request.META.get('HTTP_REFERER'))
 
 
 class TopBoughtGoods(View):

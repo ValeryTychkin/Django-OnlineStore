@@ -16,7 +16,9 @@ class UserPage(View):
     def get(self, request):
         if request.user.is_authenticated:
             id_user = request.user.id
-            user_profile_class = UserProfile(Profile.objects.select_related('user').get(user_id=id_user))
+            user_profile_class = UserProfile(Profile.objects.select_related('user')
+                                                            .only('user', 'money_in_account', 'amount_spent_money')
+                                                            .get(user_id=id_user))
             user_profile = user_profile_class.profile
             user_history = ShoppingHistory.objects.select_related('goods', 'goods__shop') \
                                                   .filter(profile=user_profile) \
@@ -45,7 +47,7 @@ class UserPage(View):
         try:
             int(request.POST['money'])
             if request.user.is_authenticated:
-                user_profile = Profile.objects.get(user_id=request.user.id)
+                user_profile = Profile.objects.only('money_in_account').get(user_id=request.user.id)
                 user_profile.money_in_account = float(user_profile.money_in_account) + int(request.POST['money'])
                 user_profile.save(update_fields=['money_in_account'])
             return redirect('user')
@@ -56,7 +58,7 @@ class UserPage(View):
 class CartPage(View):
     def get(self, request):
         if request.user.is_authenticated:
-            user_profile = Profile.objects.get(user_id=request.user.id)
+            user_profile = Profile.objects.only('money_in_account').get(user_id=request.user.id)
             context = {
                 'title': _('Cart'),
                 'goods_list': Cart.objects.select_related('goods', 'goods__shop')
@@ -73,7 +75,7 @@ class ChangeAbout(View):
     def get(self, request):
         if request.user.is_authenticated:
             id_user = request.user.id
-            user_profile = Profile.objects.select_related('user').get(user_id=id_user)
+            user_profile = Profile.objects.select_related('user').only('user', 'about').get(user_id=id_user)
             user_form = UserPageForm(initial={'f_name': user_profile.user.first_name,
                                               'l_name': user_profile.user.last_name,
                                               'about': user_profile.about,
@@ -93,12 +95,12 @@ class ChangeAbout(View):
             id_user = request.user.id
             if user_change_form.is_valid():
                 # Сохранение изменений в таблицу User
-                user = User.objects.get(id=id_user)
+                user = User.objects.only('first_name', 'last_name').get(id=id_user)
                 user.first_name = user_change_form.cleaned_data.get('f_name')
                 user.last_name = user_change_form.cleaned_data.get('l_name')
                 user.save(update_fields=['first_name', 'last_name'])
                 # Сохранение изменений в таблицу Profile
-                user_profile = Profile.objects.get(user_id=id_user)
+                user_profile = Profile.objects.only('about').get(user_id=id_user)
                 user_profile.about = user_change_form.cleaned_data.get('about')
                 user_profile.save(update_fields=['about'])
         return redirect('user')
@@ -108,7 +110,7 @@ class UserHistory(View):
     def get(self, request):
         if request.user.is_authenticated:
             id_user = request.user.id
-            user_profile = Profile.objects.select_related('user').get(user_id=id_user)
+            user_profile = Profile.objects.select_related('user').only('user').get(user_id=id_user)
             user_history = ShoppingHistory.objects.select_related('goods', 'goods__shop') \
                                                   .filter(profile=user_profile) \
                                                   .order_by('-id')
@@ -136,7 +138,7 @@ class RegisterPage(View):
             # Сохранение нового пользователя
             user = user_reg_form.save()
 
-            user_profile = Profile.objects.get(user_id=user.id)
+            user_profile = Profile.objects.only('about').get(user_id=user.id)
             user_profile.about = user_reg_form.cleaned_data.get('about')
             user_profile.save(update_fields=['about'])
 

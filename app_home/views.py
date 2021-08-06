@@ -19,9 +19,9 @@ class FaviconIco(View):
 
 class HomePage(View):
     def get(self, request):
-        random_discounts_view_style = [bool(randint(0, 1)),
+        random_discounts_view_style = (bool(randint(0, 1)),
                                        bool(randint(0, 1)),
-                                       bool(randint(0, 1))]
+                                       bool(randint(0, 1)))
 
         discounts_id = list(DiscountShop.objects.values_list('id', flat=True))
         shops_id = list(Shop.objects.values_list('id', flat=True))

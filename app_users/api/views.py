@@ -18,8 +18,7 @@ class BuyGoods(APIView):
 
     @swagger_auto_schema(responses={201: 'Все переданные товары были успешно куплены',
                                     300: 'Переданные данные не валидны',
-                                    400: 'Данные пользователя не валидны'
-                                    })
+                                    400: 'Данные пользователя не валидны'})
     def post(self, request):
         """
         :param request: JSON goods_buy: [{goods_1},{goods_2}]
@@ -48,7 +47,7 @@ class BuyGoods(APIView):
                         total_cost += goods['goods']['price_with_discount'] * goods['amount']
                     # Хватает ли пользователю денег для покупки данных товаров
                     if total_cost > float(user_profile.money_in_account):
-                        Response(status=status.HTTP_400_BAD_REQUEST)
+                        return Response(status=status.HTTP_304_NOT_MODIFIED)
                     self.buy_goods(serializer.validated_data, user_profile, total_cost)
                     return Response(status=status.HTTP_201_CREATED)
                 return Response(status=status.HTTP_304_NOT_MODIFIED)
@@ -111,8 +110,7 @@ class UserCart(APIView):
 
     @swagger_auto_schema(responses={200: 'Изменения сохранены',
                                     300: 'Переданные данные не валидны',
-                                    400: 'Данные пользователя не валидны'
-                                    })
+                                    400: 'Данные пользователя не валидны'})
     def post(self, request):
         """
         :param request: JSON goods_cart: [{goods_1},{goods_2}]
