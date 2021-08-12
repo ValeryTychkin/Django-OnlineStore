@@ -11,7 +11,7 @@ from online_store import settings
 schema_view = get_schema_view(
    openapi.Info(
       title="Django–OnlineStore",
-      default_version='v1.2.5',
+      default_version='v1.2.6',
       description="This is web–app create for show «What can I do»",
       license=openapi.License(name="BSD License"),
    ),

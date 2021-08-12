@@ -89,7 +89,7 @@
     </div>
     <div class="container" style="padding-top: 5rem;">
         <div class="row">
-            <div class="col-7">
+            <div id="col_profile" class="col-7">
                 <div class="text-center rounded-3 mx-auto" style="background-color: #FDFBFB; max-width: 25rem; margin-bottom: 1.4rem;">
                     <h4 class="mb-0 pt-3">
                         {% trans 'Your status' %}:
@@ -169,8 +169,8 @@
                     </a>
                 </div>
             </div>
-            <div class="col-1"></div>
-            <div class="col-4">
+            <div id="col_btwn" class="col-1"></div>
+            <div id="col_discounts" class="col-4 mx-auto" style="max-width: 22rem;">
                 {% for discount in shops_discount %}
                     {% if discount.is_percentage  %}
                         <div class="card card-hover mb-3" style="background-color: #FDFBFB;">
@@ -204,4 +204,23 @@
             </div>
         </div>
     </div>
+    <script>
+        render_cols()
+
+        $(window).resize(function(){
+            render_cols()
+        })
+
+        function render_cols(){
+            if ($(window).width() <= 992){
+                $('#col_profile').removeClass('col-7')
+                $('#col_btwn').removeClass('col-1')
+                $('#col_discounts').removeClass('col-4')
+            } else if  ($(window).width() > 992){
+                $('#col_profile').addClass('col-7')
+                $('#col_btwn').addClass('col-1')
+                $('#col_discounts').addClass('col-4')
+            }
+        }
+    </script>
 {% endblock %}

@@ -1,6 +1,6 @@
 # Django–OnlineStore
   
-**Version 1.2.5**
+**Version 1.2.6**
 
 > * The functionality of this web–application:
 >     *  SignUp; LogIn
