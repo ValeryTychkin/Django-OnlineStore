@@ -36,7 +36,7 @@
             </ul>
             <div class="d-flex align-items-center" style="padding-right: 1.2rem; min-width: 15rem;">
                 {% if not request.user.is_authenticated %}
-                    <form method="post" action="{% url 'log in-out process' %}">{% csrf_token %}
+                    <form method="post" action="{% url 'login process' %}">{% csrf_token %}
                         <div class="dropdown d-inline">
                             <button type="button" class="btn btn-sm btn-outline-light-brown shadow-none" style="margin-right: 1.2rem;" data-bs-toggle="dropdown" aria-expanded="false">{% trans "LogIn" %}</button>
                             <ul class="dropdown-menu dropdown-menu-end text-center" style="width: 15rem; background-color: #E9D3C3;">
@@ -47,13 +47,13 @@
                                 {% endif %}
                                 <li class="px-2 py-1">{{ login_form.username }}</li>
                                 <li class="px-2 py-1">{{ login_form.password }}</li>
-                                <li class="mt-1"><button type="submit" name="action" value="login" class="btn btn-sm btn-outline-brown">{% trans "LogIn" %}</button></li>
+                                <li class="mt-1"><button type="submit" class="btn btn-sm btn-outline-brown">{% trans "LogIn" %}</button></li>
                             </ul>
                         </div>
                         <a class="btn btn-sm btn-outline-light" style="filter: opacity(0.9);" href="{% url 'sign-up' %}">{% trans "SignUp" %}</a>
                     </form>
                 {% else %}
-                    <form method="post" action="{% url 'log in-out process' %}">{% csrf_token %}
+                    <form method="post" action="{% url 'logout process' %}">{% csrf_token %}
                         <div class="btn-group dropstart position-relative">
                             <input type="image" src="{% static 'img/app_home/cart.png' %}" class="btn cart-hover rounded border-0 shadow-none" style="margin-right: 1.2rem; height: 3.1rem;" data-bs-toggle="dropdown" aria-expanded="false">
                             <div id="num_cart_goods" style="position: absolute; right: 1.2rem; bottom: 0; z-index: 2;">
@@ -75,7 +75,7 @@
                                 <li class="px-2 py-1"><a class="dropdown-item rounded" href="{% url 'user history' %}" style="transform: scale(0.8);">{% trans "History" %}</a></li>
                             </ul>
                         </div>
-                        <button type="submit" name="action" value="logout" class="btn btn-sm btn-outline-secondary">{% trans "LogOut" %}</button>
+                        <button type="submit" class="btn btn-sm btn-outline-secondary">{% trans "LogOut" %}</button>
                     </form>
                 {% endif %}
                 <div style="margin-left: 1.8rem; transform: scale(0.85);">

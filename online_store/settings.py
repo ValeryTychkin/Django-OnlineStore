@@ -117,6 +117,11 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
+# Login_url
+
+LOGIN_URL = '/'  # main page
+
+
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
 
@@ -136,6 +141,7 @@ LANGUAGES = [
 ]
 
 LOCALE_PATHS = [os.path.join(BASE_DIR, 'locale/')]
+
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/

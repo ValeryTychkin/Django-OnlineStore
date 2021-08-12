@@ -11,6 +11,10 @@ from app_shops.models import DiscountShop, Shop, Goods
 
 
 class FaviconIco(View):
+    """
+    GET: На запрос получения favicon.ico возвращает статический файл по (/img/favicon.ico)
+    """
+
     def get(self, request):
         # staticfiles_storage для независимости смены названия папки статического файла
         # от работы рендера статических файлов на стороне пользователя
@@ -18,7 +22,18 @@ class FaviconIco(View):
 
 
 class HomePage(View):
+    """
+    Обработка запросов к главной странице сайта ('/')
+    """
+
     def get(self, request):
+        """
+        Используется кэширование случайных объектов из моделей (DiscountShop, Goods)
+            и стиль отображения скидок
+
+        :return: Рендер страницы
+        """
+
         random_discounts_view_style = (bool(randint(0, 1)),
                                        bool(randint(0, 1)),
                                        bool(randint(0, 1)))

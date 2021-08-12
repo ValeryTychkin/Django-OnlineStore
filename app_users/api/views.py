@@ -56,6 +56,9 @@ class BuyGoods(APIView):
     @staticmethod
     @transaction.atomic
     def buy_goods(validated_data, profile, total_cost):
+        """
+        Применение изменений в моделях при покупки товара пользователем
+        """
         profile.money_in_account = float(profile.money_in_account) - total_cost
 
         BuyGoods.save_goods_in_history(profile, validated_data)
@@ -68,6 +71,9 @@ class BuyGoods(APIView):
 
     @staticmethod
     def save_goods_in_history(profile, validated_data):
+        """
+        Добавление информации о купленных пользователем товаров в историю покупок
+        """
         for goods in validated_data:
             Cart.objects.get(id=goods['id']).delete()
 
@@ -140,6 +146,9 @@ class UserCart(APIView):
 
     @staticmethod
     def update_cart_model_goods(validated_data):
+        """
+        Сохранение изменений в модели Cart
+        """
         for goods in validated_data:
             cart_obj = Cart.objects.get(id=goods['id'])
             if goods['amount'] == 0:
@@ -147,4 +156,3 @@ class UserCart(APIView):
             else:
                 cart_obj.amount = goods['amount']
                 cart_obj.save(update_fields=['amount'])
-        return True
