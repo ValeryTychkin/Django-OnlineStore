@@ -25,15 +25,13 @@ class UserPageTest(TestCase):
             Shop.objects.create(
                 name=f'test_{shop_num}'
             )
-        for disc_num in range(SHOPS_NUM):
             DiscountShop.objects.create(
                 shop=Shop.objects.get(id=1),
-                percentage=disc_num
+                percentage=shop_num
             )
-        for goods_num in range(SHOPS_NUM):
             Goods.objects.create(
                 shop=Shop.objects.get(id=1),
-                name=goods_num
+                name=shop_num
             )
 
     def test_get(self):
@@ -87,15 +85,13 @@ class ChangeAboutPage(TestCase):
             Shop.objects.create(
                 name=f'test_{shop_num}'
             )
-        for disc_num in range(SHOPS_NUM):
             DiscountShop.objects.create(
                 shop=Shop.objects.get(id=1),
-                percentage=disc_num
+                percentage=shop_num
             )
-        for goods_num in range(SHOPS_NUM):
             Goods.objects.create(
                 shop=Shop.objects.get(id=1),
-                name=goods_num
+                name=shop_num
             )
 
     def test_get(self):
@@ -141,15 +137,13 @@ class RegisterPageTest(TestCase):
             Shop.objects.create(
                 name=f'test_{shop_num}'
             )
-        for disc_num in range(SHOPS_NUM):
             DiscountShop.objects.create(
                 shop=Shop.objects.get(id=1),
-                percentage=disc_num
+                percentage=shop_num
             )
-        for goods_num in range(SHOPS_NUM):
             Goods.objects.create(
                 shop=Shop.objects.get(id=1),
-                name=goods_num
+                name=shop_num
             )
 
     def test_get(self):
@@ -171,3 +165,95 @@ class RegisterPageTest(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertIn('_auth_user_id', self.client.session)
+
+
+class LogInTest(TestCase):
+
+    @classmethod
+    def setUpTestData(cls):
+        User.objects.create_user(
+            username='test',
+            first_name='first_name',
+            last_name='last_name',
+            password=USERS_PASSWORD
+        )
+
+    def test_post(self):
+        url = reverse('login process')
+
+        # Неправильный логин
+        response = self.client.post(url, {'username': 'falls',
+                                          'password': USERS_PASSWORD},
+                                    HTTP_REFERER=reverse('shops list'),
+                                    follow=True)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'app_shops/shops_list.html')
+        self.assertNotIn('_auth_user_id', self.client.session)
+
+        # Неправильный пароль
+        response = self.client.post(url, {'username': 'test',
+                                          'password': 'false'},
+                                    HTTP_REFERER=reverse('shops list'),
+                                    follow=True)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'app_shops/shops_list.html')
+        self.assertNotIn('_auth_user_id', self.client.session)
+
+        # Правильные логин и пароль
+        response = self.client.post(url, {'username': 'test',
+                                          'password': USERS_PASSWORD},
+                                    HTTP_REFERER=reverse('shops list'),
+                                    follow=True)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'app_shops/shops_list.html')
+        self.assertIn('_auth_user_id', self.client.session)
+
+
+class LogOutTest(TestCase):
+
+    @classmethod
+    def setUpTestData(cls):
+        User.objects.create_user(
+            username='test',
+            first_name='first_name',
+            last_name='last_name',
+            password=USERS_PASSWORD
+        )
+        for shop_num in range(SHOPS_NUM):
+            Shop.objects.create(
+                name=f'test_{shop_num}'
+            )
+            DiscountShop.objects.create(
+                shop=Shop.objects.get(id=1),
+                percentage=shop_num
+            )
+            Goods.objects.create(
+                shop=Shop.objects.get(id=1),
+                name=shop_num
+            )
+
+    def test_post(self):
+        url = reverse('logout process')
+
+        # Отправка POST запроса будучи не авторизированным пользователем
+        response = self.client.post(url,
+                                    HTTP_REFERER=reverse('shops list'),
+                                    follow=True)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'app_home/home_page.html')
+        self.assertNotIn('_auth_user_id', self.client.session)
+
+        # Отправка POST запроса будучи авторизированным пользователем
+        user_login = self.client.login(username='test', password=USERS_PASSWORD)
+        self.assertTrue(user_login)
+
+        response = self.client.post(url,
+                                    HTTP_REFERER=reverse('shops list'),
+                                    follow=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'app_shops/shops_list.html')
+        self.assertNotIn('_auth_user_id', self.client.session)
