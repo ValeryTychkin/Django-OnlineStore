@@ -1,6 +1,6 @@
 from random import randint, sample
 
-from django.contrib.staticfiles.storage import staticfiles_storage
+from django.contrib.staticfiles import finders
 from django.core.cache import cache
 from django.http import HttpResponse
 from django.shortcuts import render
@@ -16,9 +16,8 @@ class FaviconIco(View):
     """
 
     def get(self, request):
-        # staticfiles_storage для независимости смены названия папки статического файла
-        # от работы рендера статических файлов на стороне пользователя
-        return HttpResponse(staticfiles_storage.url('/img/favicon.ico'), content_type="image/ico")
+        favicon_path = finders.find('img/favicon.ico')
+        return HttpResponse(open(favicon_path, 'rb'), content_type="image/ico")
 
 
 class HomePage(View):
